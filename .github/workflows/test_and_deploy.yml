@@ -1,0 +1,58 @@
+name: test_and_deploy
+on: 
+  push:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: " Qu'est ce qe vous souhaitez ? "
+        required: true
+        type: choice
+        options:
+          - déploiement
+          - test add
+          - test sub
+          - tous les tests
+        dfault: "déploiement"
+
+jobs:
+  test_add:
+    runs-on: ubunto-latest
+    steps:
+      - name: checkout du dépôt
+        uses: actions/checkout@v3
+      - name: setup de node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: setup de ci
+        run: npm ci
+      - name: test
+        run: npm run test_add
+
+  test_sub:
+    runs-on: ubunto-latest
+    runs-on: ubunto-latest
+    steps:
+      - name: checkout du dépôt
+        uses: actions/checkout@v3
+      - name: setup de node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: setup de ci
+        run: npm ci
+      - name: test
+        run: npm run test_sub
+
+  deploy:
+    runs-on: ubunto-latest
+    steps:
+      - name: deploy
+        run: echo " déploiement "
+
+  notify_failure:
+    runs-on: ubunto-latest
+    steps:
+      - name: notify_failure
+        run: echo " Le déploiement a échoué "
+
