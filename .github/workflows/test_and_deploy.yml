@@ -1,5 +1,5 @@
 name: test_and_deploy
-on: 
+on:
   push:
   workflow_dispatch:
     inputs:
@@ -31,7 +31,6 @@ jobs:
 
   test_sub:
     runs-on: ubunto-latest
-    runs-on: ubunto-latest
     steps:
       - name: checkout du dépôt
         uses: actions/checkout@v3
@@ -55,4 +54,3 @@ jobs:
     steps:
       - name: notify_failure
         run: echo " Le déploiement a échoué "
-
