@@ -17,6 +17,7 @@ on:
 jobs:
   test_add:
     runs-on: ubunto-latest
+    if: inputs.actions != 'test sub' || github.event_name == 'push'
     steps:
       - name: checkout du dépôt
         uses: actions/checkout@v3
@@ -31,6 +32,7 @@ jobs:
 
   test_sub:
     runs-on: ubunto-latest
+    if: inputs.actions != 'test add' || github.event_name == 'push'
     steps:
       - name: checkout du dépôt
         uses: actions/checkout@v3
@@ -45,12 +47,16 @@ jobs:
 
   deploy:
     runs-on: ubunto-latest
+    if: inputs.actions != 'déploiement'
+    needs: [test_add, test_sub]
     steps:
       - name: deploy
         run: echo " déploiement "
 
   notify_failure:
     runs-on: ubunto-latest
+    needs: [deploy, test_add, test_sub]
+    if: ${{ failure() }}
     steps:
       - name: notify_failure
         run: echo " Le déploiement a échoué "
